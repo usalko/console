@@ -18,6 +18,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { BucketsIcon, MenuItem } from "mds";
 import { Bucket } from "../../../../api/consoleApi";
+import { useIntl } from 'react-intl';
 
 interface IBucketListItem {
   bucket: Bucket;
@@ -25,10 +26,15 @@ interface IBucketListItem {
 
 const BucketListItem = ({ bucket }: IBucketListItem) => {
   const navigate = useNavigate();
+  const intl = useIntl();
+
+  const displayName = bucket.definition && bucket.definition.length > 0
+    ? `${bucket.name} — ${bucket.definition}`
+    : bucket.name;
 
   return (
     <MenuItem
-      name={bucket.name}
+      name={displayName}
       icon={<BucketsIcon />}
       onClick={() => navigate(`/browser/${bucket.name}`)}
       id={`manageBucket-${bucket.name}`}

@@ -1,0 +1,47 @@
+{
+  "common": {
+    "buckets": "Buckets",
+    "bucket": "Bucket",
+    "objects": "Objects",
+    "object": "Object",
+    "access": "Access",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close"
+  },
+  "promo": {
+    "header": "High-Performance Object Store",
+    "info": "MinIO is a cloud-native object store built to run on any infrastructure - public, private or edge clouds. Primary use cases include data lakes, databases, AI/ML, SaaS applications and fast backup & recovery. MinIO is dual licensed under GNU AGPL v3 and commercial license. To learn more, visit {link}."
+  },
+  "footer": {
+    "documentation": "Documentation",
+    "support": "Support",
+    "download": "Download"
+  },
+    "menu": {
+      "license": "License"
+    },
+    "noResults": {
+      "title": "No Results",
+      "buckets": "No buckets match the filtering condition"
+    },
+  "bucket": {
+    "create": "Create Bucket",
+    "delete": "Delete Bucket",
+    "versioning": "Versioning",
+    "replication": "Replication",
+    "lifecycle": "Lifecycle",
+    "encryption": "Encryption",
+    "quotas": "Quotas",
+    "events": "Events"
+  },
+  "login": {
+    "title": "Sign in to MinIO Console",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign In",
+    "forgotPassword": "Forgot Password?"
+  }
+}

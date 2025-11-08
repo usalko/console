@@ -17,6 +17,7 @@
 import React, { Fragment, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Loader, LoginWrapper, RefreshIcon } from "mds";
+import { useIntl } from "react-intl";
 import { loginStrategyType } from "./login.types";
 import MainError from "../Console/Common/MainError/MainError";
 import { AppState, useAppDispatch } from "../../store";
@@ -44,6 +45,7 @@ export const getTargetPath = () => {
 const Login = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const intl = useIntl();
 
   const loginStrategy = useSelector(
     (state: AppState) => state.login.loginStrategy,
@@ -158,7 +160,7 @@ const Login = () => {
             }}
           >
             <a href={docsURL} target="_blank" rel="noopener">
-              Documentation
+              {intl.formatMessage({ id: 'footer.documentation', defaultMessage: 'Документация' })}
             </a>
             <span className={"separator"}>|</span>
             <a
@@ -174,7 +176,7 @@ const Login = () => {
               target="_blank"
               rel="noopener"
             >
-              Support
+              {intl.formatMessage({ id: 'footer.support', defaultMessage: 'Поддержка' })}
             </a>
             <span className={"separator"}>|</span>
             <a
@@ -182,24 +184,30 @@ const Login = () => {
               target="_blank"
               rel="noopener"
             >
-              Download
+              {intl.formatMessage({ id: 'footer.download', defaultMessage: 'Скачать' })}
             </a>
           </Box>
         }
-        promoHeader={
-          <span style={{ fontSize: 28 }}>High-Performance Object Store</span>
+          promoHeader={
+          <span style={{ fontSize: 28 }}>
+            {intl.formatMessage({ id: 'promo.header', defaultMessage: 'Высокопроизводительное объектное хранилище' })}
+          </span>
         }
         promoInfo={
           <span style={{ fontSize: 14, lineHeight: 1 }}>
-            MinIO is a cloud-native object store built to run on any
-            infrastructure - public, private or edge clouds. Primary use cases
-            include data lakes, databases, AI/ML, SaaS applications and fast
-            backup & recovery. MinIO is dual licensed under GNU AGPL v3 and
-            commercial license. To learn more, visit{" "}
-            <a href={"https://min.io/?ref=con"} target="_blank" rel="noopener">
-              www.min.io
-            </a>
-            .
+            {intl.formatMessage(
+              { 
+                id: 'promo.info',
+                defaultMessage: 'MinIO - это нативное облачное объектное хранилище, работающее на любой инфраструктуре - публичных, частных или граничных облаках. Основные варианты использования включают озера данных, базы данных, AI/ML, SaaS приложения и быстрое резервное копирование и восстановление. MinIO имеет двойную лицензию: GNU AGPL v3 и коммерческую. Чтобы узнать больше, посетите {link}.'
+              },
+              {
+                link: (
+                  <a href={"https://min.io/?ref=con"} target="_blank" rel="noopener">
+                    www.min.io
+                  </a>
+                )
+              }
+            )}
           </span>
         }
         backgroundAnimation={backgroundAnimation}

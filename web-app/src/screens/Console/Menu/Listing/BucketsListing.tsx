@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { Fragment, useEffect, useState } from "react";
+import { useIntl } from 'react-intl';
 import { Box, BucketsIcon, HelpBox, MenuDivider, MenuSectionHeader } from "mds";
 import { AppState, useAppDispatch } from "../../../../store";
 import { Bucket } from "../../../../api/consoleApi";
@@ -34,6 +35,7 @@ import { useSelector } from "react-redux";
 const ListBuckets = () => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
+  const intl = useIntl();
 
   const filterBuckets = useSelector(
     (state: AppState) => state.system.filterBucketList,
@@ -102,7 +104,7 @@ const ListBuckets = () => {
             }}
           >
             <BucketFiltering />
-            <MenuSectionHeader label={"Buckets"} />
+            <MenuSectionHeader label={intl.formatMessage({ id: 'common.buckets', defaultMessage: 'Buckets' })} />
             {filteredRecords.length > 0 && (
               <Box
                 sx={{
@@ -141,14 +143,14 @@ const ListBuckets = () => {
                   }}
                 >
                   <HelpBox
-                    iconComponent={<BucketsIcon />}
-                    title={"No Results"}
-                    help={
-                      <Box sx={{ textAlign: "center" }}>
-                        No buckets match the filtering condition
-                      </Box>
-                    }
-                  />
+                      iconComponent={<BucketsIcon />}
+                      title={intl.formatMessage({ id: 'noResults.title', defaultMessage: 'No Results' })}
+                      help={
+                        <Box sx={{ textAlign: "center" }}>
+                          {intl.formatMessage({ id: 'noResults.buckets', defaultMessage: 'No buckets match the filtering condition' })}
+                        </Box>
+                      }
+                    />
                 </Box>
               )}
           </Box>

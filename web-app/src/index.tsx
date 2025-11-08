@@ -20,6 +20,7 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import MainRouter from "./MainRouter";
 import StyleHandler from "./StyleHandler";
+import { LocaleProvider } from "./locales/LocaleContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
@@ -29,7 +30,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <StyleHandler>
-        <MainRouter />
+        <LocaleProvider>
+          <MainRouter />
+        </LocaleProvider>
       </StyleHandler>
     </Provider>
   </React.StrictMode>,

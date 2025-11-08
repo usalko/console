@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { Fragment } from "react";
+import { useIntl } from 'react-intl';
 import { useSelector } from "react-redux";
 import { AddIcon, DocumentationIcon, LicenseIcon, Menu, MenuItem } from "mds";
 import { AppState, useAppDispatch } from "../../../store";
@@ -34,6 +35,7 @@ const MenuWrapper = () => {
   const sidebarOpen = useSelector(
     (state: AppState) => state.system.sidebarOpen,
   );
+  const intl = useIntl();
 
   return (
     <Menu
@@ -57,14 +59,14 @@ const MenuWrapper = () => {
       endComponent={
         <Fragment>
           <MenuItem
-            name={"Documentation"}
+            name={intl.formatMessage({ id: 'footer.documentation', defaultMessage: 'Documentation' })}
             icon={<DocumentationIcon />}
             path={
               "https://docs.min.io/community/minio-object-store/index.html?ref=con"
             }
           />
           <MenuItem
-            name={"License"}
+            name={intl.formatMessage({ id: 'menu.license', defaultMessage: 'License' })}
             icon={<LicenseIcon />}
             path={IAM_PAGES.LICENSE}
             onClick={() => navigate(IAM_PAGES.LICENSE)}
@@ -75,7 +77,7 @@ const MenuWrapper = () => {
       middleComponent={
         <>
           <MenuItem
-            name={"Create Bucket"}
+            name={intl.formatMessage({ id: 'bucket.create', defaultMessage: 'Create Bucket' })}
             icon={<AddIcon />}
             onClick={() => dispatch(setAddBucketOpen(true))}
           />

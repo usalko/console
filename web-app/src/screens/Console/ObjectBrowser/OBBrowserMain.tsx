@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { Fragment, useEffect, useState } from "react";
-
+import { useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import {
   ActionLink,
@@ -43,6 +43,7 @@ import { setAddBucketOpen } from "../Buckets/ListBuckets/AddBucket/addBucketsSli
 const OBBrowserMain = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const intl = useIntl();
 
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -83,7 +84,7 @@ const OBBrowserMain = () => {
 
   return (
     <Fragment>
-      <PageHeaderWrapper label={"Object Browser"} actions={<HelpMenu />} />
+      <PageHeaderWrapper label={intl.formatMessage({ id: 'objectBrowser.title', defaultMessage: 'Object Browser' })} actions={<HelpMenu />} />
       <PageLayout>
         {loading && <ProgressBar />}
         {!loading && (
@@ -109,12 +110,13 @@ const OBBrowserMain = () => {
               <Grid item xs={8}>
                 <HelpBox
                   iconComponent={<BucketsIcon />}
-                  title={"Buckets"}
+                  title={intl.formatMessage({ id: 'common.buckets', defaultMessage: 'Buckets' })}
                   help={
                     <Fragment>
-                      MinIO uses buckets to organize objects. A bucket is
-                      similar to a folder or directory in a filesystem, where
-                      each bucket can hold an arbitrary number of objects.
+                      {intl.formatMessage({ 
+                        id: 'objectBrowser.helpText',
+                        defaultMessage: 'MinIO uses buckets to organize objects. A bucket is similar to a folder or directory in a filesystem, where each bucket can hold an arbitrary number of objects.'
+                      })}
                       <br />
                       {canListBuckets ? (
                         ""
@@ -136,13 +138,13 @@ const OBBrowserMain = () => {
                         resource={CONSOLE_UI_RESOURCE}
                       >
                         <br />
-                        To get started,&nbsp;
+                        {intl.formatMessage({ id: 'objectBrowser.toGetStarted', defaultMessage: 'To get started' })},&nbsp;
                         <ActionLink
                           onClick={() => {
                             dispatch(setAddBucketOpen(true));
                           }}
                         >
-                          Create a Bucket.
+                          {intl.formatMessage({ id: 'objectBrowser.createBucket', defaultMessage: 'Create a Bucket' })}.
                         </ActionLink>
                       </SecureComponent>
                     </Fragment>

@@ -9,7 +9,26 @@
     "edit": "Edit",
     "save": "Save",
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "clear": "Clear",
+    "upload": "Upload",
+    "download": "Download",
+    "share": "Share",
+    "preview": "Preview",
+    "refresh": "Refresh",
+    "loading": "Loading",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info",
+    "name": "Name",
+    "size": "Size",
+    "date": "Date",
+    "actions": "Actions",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "by": "by"
   },
   "promo": {
     "header": "High-Performance Object Store",
@@ -20,13 +39,15 @@
     "support": "Support",
     "download": "Download"
   },
-    "menu": {
-      "license": "License"
-    },
-    "noResults": {
-      "title": "No Results",
-      "buckets": "No buckets match the filtering condition"
-    },
+  "menu": {
+    "license": "License",
+    "objectBrowser": "Object Browser",
+    "createNewPath": "Create new path"
+  },
+  "noResults": {
+    "title": "No Results",
+    "buckets": "No buckets match the filtering condition"
+  },
   "bucket": {
     "create": "Create Bucket",
     "delete": "Delete Bucket",
@@ -35,13 +56,58 @@
     "lifecycle": "Lifecycle",
     "encryption": "Encryption",
     "quotas": "Quotas",
-    "events": "Events"
+    "events": "Events",
+    "browse": "Browse",
+    "manage": "Manage"
+  },
+  "object": {
+    "upload": "Upload Object",
+    "download": "Download Object",
+    "delete": "Delete Object",
+    "share": "Share Object",
+    "restore": "Restore Object",
+    "metadata": "Metadata",
+    "tags": "Tags",
+    "legalHold": "Legal Hold",
+    "retention": "Retention",
+    "versions": "Versions"
   },
   "login": {
     "title": "Sign in to MinIO Console",
     "username": "Username",
     "password": "Password",
     "submit": "Sign In",
-    "forgotPassword": "Forgot Password?"
+    "forgotPassword": "Forgot Password?",
+    "error": "An error has occurred",
+    "backendUnavailable": "The backend cannot be reached.",
+    "retry": "Retry"
+  },
+  "help": {
+    "visitDocs": "Visit MinIO Documentation",
+    "visitVideos": "Visit MinIO Videos",
+    "visitBlog": "Visit MinIO Blog"
+  },
+  "objectBrowser": {
+    "title": "Object Browser",
+    "filterPlaceholder": "Start typing to filter objects in the bucket",
+    "createBucket": "Create a Bucket",
+    "helpText": "MinIO uses buckets to organize objects. A bucket is similar to a folder or directory in a filesystem, where each bucket can hold an arbitrary number of objects.",
+    "toGetStarted": "To get started"
+  },
+  "license": {
+    "readStatement": "Please read the license statement",
+    "acknowledge": "Acknowledge"
+  },
+  "fileOperations": {
+    "useOriginalName": "Use Original Name",
+    "downloadFile": "Download File",
+    "bypassGovernance": "Bypass Governance Mode",
+    "sortBy": "Sort by"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidFormat": "Invalid format",
+    "tooShort": "Too short",
+    "tooLong": "Too long"
   }
 }

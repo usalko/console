@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { Fragment, useEffect, useRef, useState } from "react";
+import { useIntl } from "react-intl";
 import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
 import get from "lodash/get";
@@ -64,6 +65,7 @@ const HelpMenuContainer = styled.div(({ theme }) => ({
 }));
 
 const HelpMenu = () => {
+  const intl = useIntl();
   const helpTopics = require("../Console/helpTopics.json");
 
   const [helpItems, setHelpItems] = useState<DocItem[]>([]);
@@ -195,7 +197,7 @@ const HelpMenu = () => {
       <div style={{ padding: 16 }}>
         <MoreLink
           LeadingIcon={MinIOTierIcon}
-          text={"Visit MinIO Documentation"}
+          text={intl.formatMessage({ id: 'help.visitDocs', defaultMessage: 'Visit MinIO Documentation' })}
           link={"https://docs.min.io/?ref=con"}
           color={"#C5293F"}
         />
@@ -221,7 +223,7 @@ const HelpMenu = () => {
       <div style={{ padding: 16 }}>
         <MoreLink
           LeadingIcon={MinIOTierIcon}
-          text={"Visit MinIO Videos"}
+          text={intl.formatMessage({ id: 'help.visitVideos', defaultMessage: 'Visit MinIO Videos' })}
           link={"https://resources.min.io/l/library?contentType=video"}
           color={"#C5293F"}
         />
@@ -247,7 +249,7 @@ const HelpMenu = () => {
       <div style={{ padding: 16 }}>
         <MoreLink
           LeadingIcon={MinIOTierIcon}
-          text={"Visit MinIO Blog"}
+          text={intl.formatMessage({ id: 'help.visitBlog', defaultMessage: 'Visit MinIO Blog' })}
           link={"https://blog.min.io/?ref=con"}
           color={"#C5293F"}
         />

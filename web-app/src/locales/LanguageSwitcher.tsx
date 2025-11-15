@@ -22,4 +22,4 @@ export const LanguageSwitcher: React.FC = () => {
       {locale === 'en' ? 'RU' : 'EN'}
     </button>
   );
-};
+};  

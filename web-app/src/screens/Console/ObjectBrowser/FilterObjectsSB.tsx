@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React from "react";
+import { useIntl } from "react-intl";
 import { setSearchObjects } from "./objectBrowserSlice";
 import SearchBox from "../Common/SearchBox";
 import { AppState, useAppDispatch } from "../../../store";

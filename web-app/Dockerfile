@@ -1,17 +1,29 @@
-# Multi-stage build for MinIO Console Web App
+# Build stage
+FROM node:20-alpine AS builder
 
-# Stage 1: Build the application
-FROM node:18-alpine AS builder
-
-# Set working directory
 WORKDIR /app
 
 # Copy package files
-COPY package.json yarn.lock .yarnrc.yml ./
-COPY .yarn .yarn
+COPY package.json ./
+# Копируем yarn.lock только если он существует
+COPY yarn.loc[k] ./
+# Копируем .yarnrc.yml только если существует
+COPY .yarnrc.ym[l] ./
+
+# Копируем .yarn только если существует (для Yarn Berry)
+COPY .yar[n] .yarn/ 2>/dev/null || true
+
+# Установка yarn если нужно
+RUN if [ -f ".yarnrc.yml" ]; then \
+      echo "Using Yarn Berry"; \
+      corepack enable && corepack prepare yarn@stable --activate; \
+    else \
+      echo "Using classic Yarn"; \
+      npm install -g yarn; \
+    fi
 
 # Install dependencies
-RUN yarn install --immutable
+RUN yarn install --frozen-lockfile || yarn install
 
 # Copy source code
 COPY . .
@@ -19,21 +31,20 @@ COPY . .
 # Build the application
 RUN yarn build
 
-# Stage 2: Serve with nginx
+# Production stage
 FROM nginx:alpine
 
-# Copy custom nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy custom nginx config if exists
+COPY nginx.conf /etc/nginx/conf.d/default.conf 2>/dev/null || echo "Using default nginx config"
 
-# Copy built assets from builder stage
+# Copy built application from builder
 COPY --from=builder /app/build /usr/share/nginx/html
 
-# Expose port 80
+# Copy entrypoint script
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
 EXPOSE 80
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1
-
-# Start nginx
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]

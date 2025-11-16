@@ -35,7 +35,13 @@ RUN yarn build
 FROM nginx:alpine
 
 # Copy custom nginx config if exists
-COPY nginx.conf /etc/nginx/conf.d/default.conf 2>/dev/null || echo "Using default nginx config"
+COPY nginx.conf /tmp/nginx.conf 2>/dev/null || true
+RUN if [ -f "/tmp/nginx.conf" ]; then \
+      cp /tmp/nginx.conf /etc/nginx/conf.d/default.conf; \
+      echo "Custom nginx config applied"; \
+    else \
+      echo "Using default nginx config"; \
+    fi
 
 # Copy built application from builder
 COPY --from=builder /app/build /usr/share/nginx/html

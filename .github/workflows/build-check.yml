@@ -1,0 +1,56 @@
+name: Build Check (PR)
+
+on:
+  pull_request:
+    branches:
+      - dev
+    paths:
+      - 'web-app/**'
+
+jobs:
+  build-test:
+    name: Test Docker Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🏗️ Build Docker image
+        working-directory: ./web-app
+        run: |
+          echo "Building Docker image..."
+          docker build -t minio-console:test .
+
+      - name: 🧪 Test Docker image
+        run: |
+          echo "Starting test container..."
+          docker run -d --name test-console -p 8080:80 minio-console:test
+          
+          echo "Waiting for container to be ready..."
+          sleep 10
+          
+          echo "Testing HTTP endpoint..."
+          curl -f http://localhost:8080 || exit 1
+          
+          echo "Cleaning up..."
+          docker stop test-console
+          docker rm test-console
+
+      - name: ✅ Build Check Summary
+        if: success()
+        run: |
+          echo "## ✅ Build Check Passed! 🎉" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Docker image builds successfully and responds to HTTP requests." >> $GITHUB_STEP_SUMMARY
+          echo "Ready to merge! 🚀" >> $GITHUB_STEP_SUMMARY
+
+      - name: ❌ Build Check Failed
+        if: failure()
+        run: |
+          echo "## ❌ Build Check Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Please fix the build errors before merging." >> $GITHUB_STEP_SUMMARY

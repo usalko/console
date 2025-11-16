@@ -1,0 +1,92 @@
+name: Deploy MinIO Console to VPS
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'web-app/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:  # Позволяет запускать вручную из GitHub UI
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🚀 Deploy to VPS via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            echo "🔄 Starting deployment..."
+            
+            # Запускаем скрипт деплоя
+            sudo /usr/local/bin/deploy-minio-console.sh
+            
+            # Проверяем результат
+            if [ $? -eq 0 ]; then
+              echo "✅ Deployment completed successfully!"
+              echo "🌐 Console URL: https://console.t36a.ru"
+            else
+              echo "❌ Deployment failed!"
+              exit 1
+            fi
+
+      - name: 🏥 Health Check
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            echo "🏥 Running health checks..."
+            
+            # Проверяем что контейнер запущен
+            if docker ps | grep -q minio-console-custom; then
+              echo "✅ Container is running"
+            else
+              echo "❌ Container is not running"
+              exit 1
+            fi
+            
+            # Проверяем HTTP ответ
+            if curl -f http://127.0.0.1:8081 > /dev/null 2>&1; then
+              echo "✅ HTTP endpoint is responding"
+            else
+              echo "❌ HTTP endpoint is not responding"
+              exit 1
+            fi
+            
+            # Показываем статус
+            echo ""
+            echo "📊 Container status:"
+            docker ps | grep minio-console-custom
+            echo ""
+            echo "📝 Recent logs:"
+            docker logs --tail 5 minio-console-custom
+
+      - name: 📢 Deployment Summary
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "## ✅ Deployment Successful! 🎉" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "MinIO Console has been deployed successfully!" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "🔗 **Console URL:** https://console.t36a.ru" >> $GITHUB_STEP_SUMMARY
+            echo "🔗 **API URL:** https://api.t36a.ru" >> $GITHUB_STEP_SUMMARY
+            echo "🔗 **Landing:** https://t36a.ru" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ❌ Deployment Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Please check the logs above for details." >> $GITHUB_STEP_SUMMARY
+          fi
